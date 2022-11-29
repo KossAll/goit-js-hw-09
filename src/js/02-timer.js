@@ -32,7 +32,7 @@ const options = {
     },
 };
 
-const flatpickr = flatpickr('#datetime-picker', options);
+const flatpi = flatpickr('#datetime-picker', options);
 
 function startTimer(e) {
     if (e.target.nodeName === 'BUTTON'){
