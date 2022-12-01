@@ -18,21 +18,23 @@ let userDate = null;
 refs.button.addEventListener('click', startTimer);
 
 const options = {
-    enableTime: true,
-    time_24hr: true,
-    defaultDate: new Date(),
-    minuteIncrement: 1,
-    onClose(selectedDates) {
-        if(selectedDates[0] <= options.defaultDate  ) {
-            Notify.warning('Please choose a date in the future'); 
-            refs.button.disabled = true;          
-        }
-        else {
-            refs.button.disabled = false}
-    },
+  enableTime: true,
+  time_24hr: true,
+  defaultDate: new Date(),
+  minuteIncrement: 1,
+  onClose(selectedDates) {
+    if (selectedDates[0] <= options.defaultDate) {
+      Notify.warning('Please choose a date in the future');
+      refs.button.disabled = true;
+    }
+    else {
+      Notify.success("Great! Let's go to start!");
+      refs.button.disabled = false;
+    }
+  },
 };
 
-const flatpi = flatpickr('#datetime-picker', options);
+flatpickr(refs.input, options);
 
 function startTimer(e) {
     if (e.target.nodeName === 'BUTTON'){
@@ -46,14 +48,13 @@ function startTimer(e) {
 
 function countDownTimer() {
   userDate = Date.parse(refs.input.value);
-  const diffTime = userDate - Date.now();
-  let { days, hours, minutes, seconds } = getTimeComponents(diffTime);
+  const { days, hours, minutes, seconds } = getTimeComponents(userDate - Date.now());
   if (userDate <= Date.now()) {
     clearInterval(timerID);
       refs.input.disabled = false;
   }
 
-  if (diffTime <= 1000) {
+  if (userDate - Date.now() <= 1000) {
     clearInterval(timerID);
     seconds = getTimeComponents(0).seconds;
     minutes = getTimeComponents(0).minutes;
@@ -74,4 +75,4 @@ function updateCountDownUI({ seconds, minutes, hours, days }) {
   refs.minutesUi.textContent = minutes;
   refs.hoursUi.textContent = hours;
   refs.daysUi.textContent = days;
-}
+};
